@@ -1,0 +1,3 @@
+This repo contains an app I developed
+using flutter to learn flutter and git
+at the same time
