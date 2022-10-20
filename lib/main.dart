@@ -5,11 +5,6 @@ import 'package:basic_flutter_app/TodoListState.dart';
 
 void main() => runApp(ToDoApp());
 
-class ToDoApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'To do List',
-        home: Scaffold(appBar: AppBar(title: Text('My To-do List'))));
-  }
-}
+
+
+
