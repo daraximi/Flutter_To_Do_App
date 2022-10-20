@@ -1,5 +1,4 @@
 // ignore_for_file: unnecessary_new, use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
 
 class ToDoApp extends StatelessWidget {
@@ -19,22 +18,16 @@ class TodoListState extends State<TodoList> {
   List<String> _todoItems = [];
 
   // This will be called each time the + button is pressed
-  void _addTodoItem() {
-    // Putting our code inside "setState" tells the app that our state has changed, and
-    // it will automatically re-render the list
-    setState(() {
-      int index = _todoItems.length;
-      _todoItems.add('Item ' + index.toString());
-    });
+  void _addTodoItem(String task) {
+    if (task.length > 0) {
+      setState(() => _todoItems.add(task));
+    }
   }
 
   // Build the whole list of todo items
   Widget _buildTodoList() {
     return new ListView.builder(
       itemBuilder: (context, index) {
-        // itemBuilder will be automatically be called as many times as it takes for the
-        // list to fill up its available space, which is most likely more than the
-        // number of todo items e have. So, we need to check the index is OK.
         if (index < _todoItems.length) {
           return _buildTodoItem(_todoItems[index]);
         }
@@ -54,9 +47,26 @@ class TodoListState extends State<TodoList> {
       appBar: new AppBar(title: new Text('Todo List')),
       body: _buildTodoList(),
       floatingActionButton: new FloatingActionButton(
-          onPressed: _addTodoItem,
+          onPressed: _pushAddTodoScreen,
           tooltip: 'Add task',
           child: new Icon(Icons.add)),
     );
+  }
+
+  void _pushAddTodoScreen() {
+    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+      return Scaffold(
+          appBar: AppBar(title: Text('Add a new task')),
+          body: TextField(
+              autofocus: true,
+              onSubmitted: (val) {
+                _addTodoItem(val);
+                Navigator.pop(context);
+              },
+              // ignore: prefer_const_constructors
+              decoration: InputDecoration(
+                  hintText: 'Enter something to do...',
+                  contentPadding: const EdgeInsets.all(16.0))));
+    }));
   }
 }
