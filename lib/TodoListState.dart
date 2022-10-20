@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_new, use_key_in_widget_constructors
+// ignore_for_file: unnecessary_new, use_key_in_widget_constructors, prefer_const_constructors
 import 'package:flutter/material.dart';
 
 class ToDoApp extends StatelessWidget {
@@ -29,16 +29,18 @@ class TodoListState extends State<TodoList> {
     return new ListView.builder(
       itemBuilder: (context, index) {
         if (index < _todoItems.length) {
-          return _buildTodoItem(_todoItems[index]);
+          return _buildTodoItem(_todoItems[index], index);
         }
-        return _buildTodoItem('');
+        return _buildTodoItem('', 1);
       },
     );
   }
 
   // Build a single todo item
-  Widget _buildTodoItem(String todoText) {
-    return new ListTile(title: new Text(todoText));
+  Widget _buildTodoItem(String todoText, int index) {
+    return new ListTile(title: new Text(todoText),
+    onTap: ()=> _promptRemoveTodoItem(index),
+    );
   }
 
   @override
@@ -68,5 +70,30 @@ class TodoListState extends State<TodoList> {
                   hintText: 'Enter something to do...',
                   contentPadding: const EdgeInsets.all(16.0))));
     }));
+  }
+
+  void _removeTodoItem(int index) {
+    setState(() => _todoItems.removeAt(index));
+  }
+
+  void _promptRemoveTodoItem(int index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Text('Mark "${_todoItems[index]}"as done?'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('CANCEL'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                TextButton(
+                    onPressed: () {
+                      _removeTodoItem(index);
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('MARK AS DONE'))
+              ]);
+        });
   }
 }
