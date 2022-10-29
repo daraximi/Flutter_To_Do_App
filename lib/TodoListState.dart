@@ -93,7 +93,9 @@ class TodoListState extends State<TodoList> {
                       Navigator.of(context).pop();
                     },
                     child: Text('MARK AS DONE'))
-              ]);
-        });
+              ]
+            );
+        }
+      );
   }
 }
